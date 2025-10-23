@@ -67,23 +67,15 @@ known_first_party = ["django_whatsapp"]
 [tool.django-stubs]
 django_settings_module = "testproj.settings"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/django_whatsapp"]
-
-[tool.hatch.build.targets.sdist]
-exclude = ["/.devcontainer", "/.github"]
-
-[tool.hatch.version]
-source = "vcs"
-
 [tool.hatch.envs.default]
 dependencies = [
   "django-stubs>=5.2",
   "mypy",
   "pre-commit",
-  "pytest",
   "pytest-asyncio",
+  "pytest-cov",
   "pytest-django",
+  "pytest",
 ]
 
 [tool.hatch.envs.hatch-test]
@@ -104,6 +96,15 @@ matrix.django.dependencies = [
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "none"
 dependencies = ["ruff==0.14.*"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_whatsapp"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.devcontainer", "/.github"]
+
+[tool.hatch.version]
+source = "vcs"
 
 [tool.mypy]
 plugins = ["mypy_django_plugin.main"]
