@@ -41,6 +41,6 @@ class AsyncWebhookView(View):
         except SuspiciousOperation:
             return HttpResponseBadRequest()
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+    async def post(self, request: HttpRequest) -> HttpResponse:
         """Handle a WhatsApp Event Notification."""
         raise NotImplementedError
