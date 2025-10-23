@@ -78,9 +78,7 @@ source = "vcs"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "coverage[toml]>=6.5",
   "django-stubs>=5.2",
-  "faker",
   "mypy",
   "pre-commit",
   "pytest",
@@ -88,33 +86,20 @@ dependencies = [
   "pytest-django",
 ]
 
-[tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
-test-cov = "coverage run -m pytest {args:tests}"
-cov-report = [
-  "- coverage combine",
-  "coverage report",
-]
-cov = [
-  "test-cov",
-  "cov-report",
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+  "pytest-asyncio",
+  "pytest-django",
 ]
 
-[[tool.hatch.envs.all.matrix]]
+[[tool.hatch.envs.hatch-test.matrix]]
+django = ["5.2"]
 python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
-[tool.hatch.envs.tests.overrides]
+[tool.hatch.envs.hatch-test.overrides]
 matrix.django.dependencies = [
   { value = "django>=5.2,<6.0", if = ["5.2"] },
 ]
-
-[[tool.hatch.envs.tests.matrix]]
-django = ["4.2"]
-python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
-
-[[tool.hatch.envs.tests.matrix]]
-django = ["5.0", "5.1"]
-python = ["3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "none"
