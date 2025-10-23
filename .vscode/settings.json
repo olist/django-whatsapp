@@ -1,0 +1,17 @@
+{
+    "workbench.editor.enablePreview": false,
+    "files.insertFinalNewline": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tombi-toml.tombi",
+        "editor.formatOnSave": true
+    }
+}
