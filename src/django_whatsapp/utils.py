@@ -2,7 +2,6 @@
 
 from http import HTTPStatus
 
-from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpRequest, HttpResponse
 

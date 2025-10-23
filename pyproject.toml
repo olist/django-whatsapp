@@ -201,6 +201,8 @@ ban-relative-imports = "parents"
 [tool.ruff.lint.per-file-ignores]
 "manage.py" = ["PLC", "ANN"]
 "*/models.py" = ["D106"]
+"*/apps.py" = ["D100"]
+"*/*urls.py" = ["D100"]
 "*/migrations/*.py" = ["D", "RUF012"]
 "tests/*.py" = ["D", "S101"]
 "testproj/*.py" = ["D"]

@@ -1,7 +1,5 @@
 """WhatsApp Webhook views."""
 
-from typing import ClassVar
-
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
