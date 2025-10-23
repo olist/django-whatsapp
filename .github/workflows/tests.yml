@@ -32,6 +32,9 @@ jobs:
       - name: Run static analysis
         run: hatch fmt --check
 
+      - name: Run type checking
+        run: hatch run mypy src/django_whatsapp
+
   tests:
     name: Run tests on ${{ matrix.python-version }}
     runs-on: ubuntu-latest
