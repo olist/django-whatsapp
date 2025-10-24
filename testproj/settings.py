@@ -104,3 +104,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # WhatsApp
 WHATSAPP_VERIFY_TOKEN = "meatyhamhock"  # noqa: S105
+WHATSAPP_APP_SECRET = b"super-secret"
