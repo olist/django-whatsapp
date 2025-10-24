@@ -1,3 +1,5 @@
+import hashlib
+import hmac
 from http import HTTPStatus
 
 import pytest
@@ -6,7 +8,7 @@ from django.http import HttpRequest
 from django.http.response import HttpResponse
 from django.test.client import RequestFactory
 
-from django_whatsapp.utils import verify_request
+from django_whatsapp.utils import verify_request, verify_signature
 
 
 def test_verify_request_invalid_args(valid_verify_request: HttpRequest) -> None:
@@ -76,3 +78,42 @@ def test_verify_request_valid(rf: RequestFactory) -> None:
     assert isinstance(response, HttpResponse)
     assert response.status_code == HTTPStatus.OK
     assert response.content == b"1158201444"
+
+
+def test_verify_signature_missing_signature(rf: RequestFactory) -> None:
+    """Test :func:`verify_signature` without a signature."""
+    request: HttpRequest = rf.post("/")
+
+    with pytest.raises(SuspiciousOperation, match="Signature not found"):
+        verify_signature(request, b"app_secret")
+
+
+def test_verify_signature_invalid_type(rf: RequestFactory) -> None:
+    """Test :func:`verify_signature` with invalid digest type."""
+    request: HttpRequest = rf.post("/", headers={"X-Hub-Signature-256": "md5=123456"})
+
+    with pytest.raises(SuspiciousOperation, match="format"):
+        verify_signature(request, b"app_secret")
+
+
+def test_verify_signature_invalid_signature(rf: RequestFactory) -> None:
+    """Test :func:`verify_signature` with invalid signature."""
+    request: HttpRequest = rf.post("/", headers={"X-Hub-Signature-256": "sha256=123456"})
+
+    with pytest.raises(SuspiciousOperation, match="Invalid signature"):
+        verify_signature(request, b"app_secret")
+
+
+def test_verify_signature_valid_signature(rf: RequestFactory) -> None:
+    """Test :func:`verify_signature` with valid signature."""
+    app_secret = b"app_secret"
+    payload = b'{"entry": []}'
+    expected_signature = hmac.new(app_secret, payload, hashlib.sha256).hexdigest()
+    request: HttpRequest = rf.post(
+        "/",
+        data=payload,
+        content_type="application/json",
+        headers={"X-Hub-Signature-256": f"sha256={expected_signature}"},
+    )
+
+    verify_signature(request, b"app_secret")
